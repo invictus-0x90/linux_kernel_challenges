@@ -1,0 +1,63 @@
+#include <linux/module.h>
+#include <linux/usb.h>
+#include <linux/hid.h>
+#include <linux/usb/input.h>
+#include <linux/init.h>
+
+static struct usb_device_id kb_id_table[] =
+{
+	{USB_INTERFACE_INFO(USB_INTERFACE_CLASS_HID,
+					   USB_INTERFACE_SUBCLASS_BOOT,
+					   USB_INTERFACE_PROTOCOL_KEYBOARD)},
+	{}
+};
+
+MODULE_DEVICE_TABLE(usb, kb_id_table);
+
+static int kb_probe(struct usb_interface *iface, const struct usb_device_id *id)
+{
+	return 0;
+}
+
+static void kb_disconnect(struct usb_interface *intf)
+{
+	return;
+}
+
+
+static struct usb_driver kb_driver = 
+{
+	.name = "kb_driver",
+	.id_table = kb_id_table,
+	.probe = kb_probe,
+	.disconnect = kb_disconnect
+};
+
+static int __init kb_driver_init(void)
+{
+	int result;
+
+	result = usb_register(&kb_driver);
+	if(result)
+	{
+		printk("[x] Error registering kb_driver %d [x]\n", result);
+	}
+	else
+	{
+		printk("[+] Kb_driver registered! [+]\n");
+	}
+	return result;
+}
+
+static void __exit kb_driver_exit(void)
+{
+	printk("[+] Deregistering kb_driver [+]\n");
+	usb_deregister(&kb_driver);
+}
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("f224a7d4c3a1");
+MODULE_DESCRIPTION("A simple keyboard usb driver");
+
+module_init(kb_driver_init);
+module_exit(kb_driver_exit);

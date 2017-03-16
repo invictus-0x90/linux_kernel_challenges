@@ -1,0 +1,1 @@
+cmd_/media/partition/kernel_dev/module_dev/task5/usb_driver.ko := ld -r -m elf_x86_64 -T /usr/src/linux-headers-4.8.0-2-common/scripts/module-common.lds --build-id  -o /media/partition/kernel_dev/module_dev/task5/usb_driver.ko /media/partition/kernel_dev/module_dev/task5/usb_driver.o /media/partition/kernel_dev/module_dev/task5/usb_driver.mod.o
